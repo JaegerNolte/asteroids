@@ -1,7 +1,9 @@
-import pygame
+import pygame;
 from constants import SCREEN_HEIGHT, SCREEN_WIDTH
-from logger import log_state
-from player import Player
+from logger import log_state;
+from player import Player;
+from asteroid import Asteroid;
+from asteroidfield import AsteroidField;
 
 
 def main():
@@ -14,6 +16,7 @@ def main():
     # groups made to better manage game objects
     updatable = pygame.sprite.Group() 
     drawable = pygame.sprite.Group()
+    asteroids = pygame.sprite.Group()
 
     # player class is added to both groups
     player.add(updatable)
@@ -22,6 +25,8 @@ def main():
     # Player is the name of the class, not an instance of it
     # This must be done before any Player objects are created
     Player.containers = (updatable, drawable)
+    Asteroid.containers = (asteroids, updatable, drawable)
+    AsteroidField.containers = (updatable)
 
 
     while True:
