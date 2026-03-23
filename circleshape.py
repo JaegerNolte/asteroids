@@ -13,7 +13,7 @@ class CircleShape(pygame.sprite.Sprite):
         self.radius = radius
 
     
-    def collides_with(self, other): # TODO have collider find the POS of self and other
+    def collides_with(self, other):
 
         distance = pygame.math.Vector2.distance_to(self.position, other.position)
 

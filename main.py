@@ -7,6 +7,7 @@ from player import Player;
 from circleshape import CircleShape;
 from asteroid import Asteroid;
 from asteroidfield import AsteroidField;
+from shot import Shot;
 
 
 def main():
@@ -20,6 +21,7 @@ def main():
     updatable = pygame.sprite.Group() 
     drawable = pygame.sprite.Group()
     asteroids = pygame.sprite.Group()
+    shots = pygame.sprite.Group()
 
 
     # player class is added to both groups
@@ -32,6 +34,7 @@ def main():
     Player.containers = (updatable, drawable)
     Asteroid.containers = (asteroids, updatable, drawable)
     AsteroidField.containers = (updatable)
+    Shot.containers = (shots, updatable, drawable)
 
 
     asteroidfield = AsteroidField() # creates new asteroidfield object
@@ -48,11 +51,18 @@ def main():
         screen.fill("black")
         updatable.update(dt) # updates objects in the updatable group
 
-        for asteroid in asteroids: # TODO have collider find the POS of self and other
-            if CircleShape.collides_with(player, asteroid) == True:
+        for asteroid in asteroids:
+            if CircleShape.collides_with(player, asteroid) == True: # checks if CircleShape of player and asteriod collide
                 log_event("player_hit")
                 print("Game Over!")
                 sys.exit()
+
+            for shot in shots:
+                if CircleShape.collides_with(shot, asteroid) == True:
+                    log_event("asteroid_shot")
+                    pygame.sprite.Sprite.kill(shot)
+                    Asteroid.split(asteroid)
+
 
         for object in drawable: # loops drawables and .draw() them indiviudally 
             object.draw(screen)
